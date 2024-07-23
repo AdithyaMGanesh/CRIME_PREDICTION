@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="/static/images/map.jpg" type="" />
+
+    <title>Crime Rate</title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
+
+    <!-- fonts style -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--owl slider stylesheet -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    />
+
+    <!-- font awesome style -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="/static/css/responsive.css" rel="stylesheet" />
+
+    <link type="stylesheet" href="crime.css" />
+    <style>
+      /* .fm{
+    background-color: #00204a;
+  }
+  .crime_img{
+    width:50px;
+  } */
+      #totalcrime {
+        display: none;
+      }
+      #yearcrime {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body class="sub_page">
+    <div class="hero_area">
+      <div class="hero_bg_box">
+        <div class="bg_img_box">
+          <img src="/static/images/hero-bg.png" alt="" class="preserve" />
+        </div>
+      </div>
+
+      <!-- header section strats -->
+      <header class="header_section">
+        <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg custom_nav-container">
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class=""> </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('home')}}">HOME </a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="{{url_for('analysis')}}"
+                    >ANALYSIS<span class="sr-only">(current)</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('crime_choropleth')}}">MAP</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('predict_page')}}">PREDICTION</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('accuracy')}}"> ACCURACY</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </header>
+      <!-- end header section -->
+    </div>
+
+    <!-- about section -->
+
+    <section class="about_section layout_padding">
+      <div class="container">
+        <div class="heading_container heading_center">
+          <h2>
+            <span>ANALYSIS</span>
+          </h2>
+          <header class="header_section">
+            <div class="container-fluid">
+              <nav class="navbar navbar-expand-lg custom_nav-container">
+                <a class="navbar-brand" href="index.html">
+                  <span> </span>
+                </a>
+
+                <button
+                  class="navbar-toggler"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                >
+                  <span class=""> </span>
+                </button>
+
+                <div
+                  class="collapse navbar-collapse"
+                  id="navbarSupportedContent"
+                >
+                  <ul class="navbar-nav">
+                    <li class="nav-item">
+                      <a class="nav-link" id="showTotalCrimes" href=""
+                        >Total crimes in all states</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="showAllStateYearWiseCrimes"
+                        href=""
+                        >Year wise crime in each states</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="showDistricWiseCrimes" href=""
+                        >District Wise Total Crimes</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="showStateYearWiseCrimes" href=""
+                        >State Year wise crimes
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="showYearWiseCrimeRates" href=""
+                        >Year wise crimes in State
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="corelation" href="">
+                        Corelation Heat Map</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+            </div>
+          </header>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="img-box">
+              <img src="/static/images/map.jpg" alt="" class="crime_img" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="detail-box">
+              <h3 class="crime_heading">Crime Rate</h3>
+              <p class="crimetxt">
+                The rate of crimes in society is an ever-increasing problem. In
+                recent times, many types of crimes, such as theft, fraud,
+                assault, and even cybercrime, have been on the rise. India, too,
+                has seen an increase in crime rates in recent years, making it
+                one of the most affected countries in terms of crime.
+              </p>
+
+              <!-- <a href="#totalcrime" class="see_crime_head"> See Crime Rate </a> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="totalcrime" class="service_section layout_padding">
+      <div class="service_container">
+        <div class="container">
+          <div class="heading_container heading_center">
+            <h2>
+              <span></span>
+            </h2>
+            <p></p>
+
+            <div id="totalcrimeimage"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- end about section -->
+    <script>
+      document
+        .getElementById("showTotalCrimes")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", "/total_crimes_in_all_states", true);
+
+          xhr.responseType = "blob";
+          xhr.onload = function () {
+            if (this.status === 200) {
+              var imgURL = URL.createObjectURL(this.response);
+              var img = new Image();
+              img.src = imgURL;
+              document.getElementById("totalcrime").style.display = "block";
+              document.getElementById("totalcrimeimage").innerHTML = "";
+              document.getElementById("totalcrimeimage").appendChild(img);
+              img.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          };
+          xhr.send();
+        });
+
+      document
+        .getElementById("showAllStateYearWiseCrimes")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", "/all_state_year_wise_crimes", true);
+          console.log("dfdh");
+          xhr.responseType = "blob";
+          xhr.onload = function () {
+            if (this.status === 200) {
+              var imgURL = URL.createObjectURL(this.response);
+              var img = new Image();
+              img.src = imgURL;
+              document.getElementById("totalcrime").style.display = "block";
+              document.getElementById("totalcrimeimage").innerHTML = "";
+              document.getElementById("totalcrimeimage").appendChild(img);
+              img.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          };
+          xhr.send();
+        });
+
+      document
+        .getElementById("showDistricWiseCrimes")
+        .addEventListener("click", function () {
+          //location.reload();
+          event.preventDefault();
+          clearImages();
+          // Create form element
+          var form = document.createElement("form");
+          form.classList.add("fm");
+
+          // Create select element for district selection
+          var selectDistrictLabel = document.createElement("label");
+          selectDistrictLabel.textContent = "SELECT STATE:";
+          var selectDistrict = document.createElement("select");
+          selectDistrict.id = "districtInput";
+          selectDistrict.name = "district";
+          selectDistrict.classList.add("select-district");
+          var districts = [
+            "ANDHRA PRADESH",
+            "ARUNACHAL PRADESH",
+            "ASSAM",
+            "BIHAR",
+            "CHHATTISGARH",
+            "GOA",
+            "GUJARAT",
+            "HARYANA",
+            "HIMACHAL PRADESH",
+            "JAMMU & KASHMIR",
+            "JHARKHAND",
+            "KARNATAKA",
+            "KERALA",
+            "MADHYA PRADESH",
+            "MAHARASHTRA",
+            "MANIPUR",
+            "MEGHALAYA",
+            "MIZORAM",
+            "NAGALAND",
+            "ODISHA",
+            "PUNJAB",
+            "RAJASTHAN",
+            "SIKKIM",
+            "TAMIL NADU",
+            "TRIPURA",
+            "UTTAR PRADESH",
+            "UTTARAKHAND",
+            "WEST BENGAL",
+            "A & N ISLANDS",
+            "CHANDIGARH",
+            "D & N HAVELI",
+            "DAMAN & DIU",
+            "DELHI UT",
+            "LAKSHADWEEP",
+            "PUDUCHERRY",
+          ];
+          for (var i = 0; i < districts.length; i++) {
+            var option = document.createElement("option");
+            option.value = districts[i];
+            option.textContent = districts[i];
+            selectDistrict.appendChild(option);
+          }
+
+          // Create submit button
+          var submitButton = document.createElement("input");
+          submitButton.type = "submit";
+          submitButton.value = "Submit";
+          submitButton.classList.add("submit-button");
+
+          // Event listener for form submission
+          form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            var districtName = document.getElementById("districtInput").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open(
+              "GET",
+              "/district_wise_total_ipc_crimes?district=" + districtName,
+              true
+            );
+            xhr.responseType = "blob";
+            xhr.onload = function () {
+              if (this.status === 200) {
+                // Clear previous image
+                clearImages();
+                var imgURL = URL.createObjectURL(this.response);
+                var img = new Image();
+                img.src = imgURL;
+                document.body.appendChild(img);
+              }
+            };
+            xhr.send();
+          });
+          // Append form elements to the body
+          form.appendChild(selectDistrictLabel);
+          form.appendChild(selectDistrict);
+          form.appendChild(submitButton);
+          document.body.appendChild(form);
+          function clearImages() {
+            var images = document.querySelectorAll("img:not(.crime_img)");
+            for (var i = 0; i < images.length; i++) {
+              images[i].remove();
+            }
+          }
+        });
+      document
+        .getElementById("showStateYearWiseCrimes")
+        .addEventListener("click", function () {
+          //location.reload();
+          event.preventDefault();
+          clearImages();
+          // Create form element
+          var form = document.createElement("form");
+          form.classList.add("fm");
+
+          // Create select element for district selection
+          var selectDistrictLabel = document.createElement("label");
+          selectDistrictLabel.textContent = "SELECT STATE:";
+          var selectDistrict = document.createElement("select");
+          selectDistrict.id = "districtInput";
+          selectDistrict.name = "district";
+          selectDistrict.classList.add("select-district");
+          var districts = [
+            "ANDHRA PRADESH",
+            "ARUNACHAL PRADESH",
+            "ASSAM",
+            "BIHAR",
+            "CHHATTISGARH",
+            "GOA",
+            "GUJARAT",
+            "HARYANA",
+            "HIMACHAL PRADESH",
+            "JAMMU & KASHMIR",
+            "JHARKHAND",
+            "KARNATAKA",
+            "KERALA",
+            "MADHYA PRADESH",
+            "MAHARASHTRA",
+            "MANIPUR",
+            "MEGHALAYA",
+            "MIZORAM",
+            "NAGALAND",
+            "ODISHA",
+            "PUNJAB",
+            "RAJASTHAN",
+            "SIKKIM",
+            "TAMIL NADU",
+            "TRIPURA",
+            "UTTAR PRADESH",
+            "UTTARAKHAND",
+            "WEST BENGAL",
+            "A & N ISLANDS",
+            "CHANDIGARH",
+            "D & N HAVELI",
+            "DAMAN & DIU",
+            "DELHI UT",
+            "LAKSHADWEEP",
+            "PUDUCHERRY",
+          ];
+          for (var i = 0; i < districts.length; i++) {
+            var option = document.createElement("option");
+            option.value = districts[i];
+            option.textContent = districts[i];
+            selectDistrict.appendChild(option);
+          }
+
+          // Create submit button
+          var submitButton = document.createElement("input");
+          submitButton.type = "submit";
+          submitButton.value = "Submit";
+          submitButton.classList.add("submit-button");
+
+          // Event listener for form submission
+          form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            var districtName = document.getElementById("districtInput").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open(
+              "GET",
+              "/state_year_wise_crimes?district=" + districtName,
+              true
+            );
+            xhr.responseType = "blob";
+            xhr.onload = function () {
+              if (this.status === 200) {
+                // Clear previous image
+                clearImages();
+                var imgURL = URL.createObjectURL(this.response);
+                var img = new Image();
+                img.src = imgURL;
+                document.body.appendChild(img);
+              }
+            };
+            xhr.send();
+          });
+          // Append form elements to the body
+          form.appendChild(selectDistrictLabel);
+          form.appendChild(selectDistrict);
+          form.appendChild(submitButton);
+          document.body.appendChild(form);
+          function clearImages() {
+            var images = document.querySelectorAll("img:not(.crime_img)");
+            for (var i = 0; i < images.length; i++) {
+              images[i].remove();
+            }
+          }
+        });
+
+      document
+        .getElementById("showYearWiseCrimeRates")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          clearImages();
+
+          // Create form element
+          var form = document.createElement("form");
+          form.classList.add("fm");
+
+          // Create select element for year selection
+          var selectYearLabel = document.createElement("label");
+          selectYearLabel.textContent = "Select Year:";
+          var selectYear = document.createElement("select");
+          selectYear.id = "yearInput";
+          selectYear.name = "year";
+          selectYear.classList.add("select-year");
+          var years = [
+            "2001",
+            "2002",
+            "2003",
+            "2004",
+            "2005",
+            "2006",
+            "2007",
+            "2008",
+            "2009",
+            "2010",
+            "2011",
+            "2012",
+          ]; // Example years, modify as needed
+          for (var i = 0; i < years.length; i++) {
+            var option = document.createElement("option");
+            option.value = years[i];
+            option.textContent = years[i];
+            selectYear.appendChild(option);
+          }
+
+          // Create submit button
+          var submitButton = document.createElement("input");
+          submitButton.type = "submit";
+          submitButton.value = "Submit";
+          submitButton.classList.add("submit-button");
+
+          // Event listener for form submission
+          form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            var year = document.getElementById("yearInput").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/year_wise_crime_rates?year=" + year, true);
+            xhr.responseType = "blob";
+            xhr.onload = function () {
+              if (this.status === 200) {
+                // Clear previous image
+                clearImages();
+                var imgURL = URL.createObjectURL(this.response);
+                var img = new Image();
+                img.src = imgURL;
+                document.body.appendChild(img);
+              }
+            };
+            xhr.send();
+          });
+
+          // Append form elements to the body
+          form.appendChild(selectYearLabel);
+          form.appendChild(selectYear);
+          form.appendChild(submitButton);
+          document.body.appendChild(form);
+        });
+
+      function clearImages() {
+        var images = document.querySelectorAll("img:not(.crime_img)");
+        for (var i = 0; i < images.length; i++) {
+          images[i].remove();
+        }
+      }
+      document
+        .getElementById("corelation")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", "/correlation_heat_map", true);
+
+          xhr.responseType = "blob";
+          xhr.onload = function () {
+            if (this.status === 200) {
+              var imgURL = URL.createObjectURL(this.response);
+              var img = new Image();
+              img.src = imgURL;
+              document.getElementById("totalcrime").style.display = "block";
+              document.getElementById("totalcrimeimage").innerHTML = "";
+              document.getElementById("totalcrimeimage").appendChild(img);
+              img.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          };
+          xhr.send();
+        });
+    </script>
+  </body>
+</html>
