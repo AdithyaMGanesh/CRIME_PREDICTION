@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crime Prediction & Safe Path System</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
 
-    <!-- Landing Page -->
     <div class="container" id="landing-page">
         <h1>Crime Prediction & Safe Path System</h1>
         <button onclick="showPage('login-page')">Login</button>
         <button onclick="showPage('register-page')">Create Account</button>
     </div>
 
-    <!-- Login Page -->
     <div class="container hidden" id="login-page">
         <h2>Login</h2>
         <input type="text" id="login-username" placeholder="Enter Username">
@@ -24,7 +24,6 @@
         <p>New User? <a href="#" onclick="showPage('register-page')">Create an account</a></p>
     </div>
 
-    <!-- Registration Page -->
     <div class="container hidden" id="register-page">
         <h2>Create Account</h2>
         <input type="text" id="reg-username" placeholder="Enter Username">
@@ -33,37 +32,38 @@
         <p>Already registered? <a href="#" onclick="showPage('login-page')">Login here</a></p>
     </div>
 
-    <!-- Main Dashboard Page -->
     <div class="container hidden" id="main-page">
         <h2>Dashboard</h2>
         <div class="tabs">
             <button onclick="showTab('crime-prediction')">Crime Prediction</button>
             <button onclick="showTab('safe-path')">Safe Path Recommendation</button>
         </div>
-        <!-- Crime Prediction Tab -->
+
         <div id="crime-prediction" class="tab-content">
             <h3>Crime Prediction</h3>
             <p>Enter your State and District to predict total IPC crimes</p>
-            <input type="text" id="prediction-state" placeholder="Enter State (e.g., ANDHRA PRADESH)">
-            <input type="text" id="prediction-district" placeholder="Enter District (e.g., GUNTUR)">
+            <input type="text" id="prediction-state" placeholder="Enter State">
+            <input type="text" id="prediction-district" placeholder="Enter District">
             <button onclick="processPrediction()">Predict Crime</button>
             <p id="prediction-output"></p>
         </div>
-        <!-- Safe Path Recommendation Tab -->
+
         <div id="safe-path" class="tab-content hidden">
             <h3>Safe Path Recommendation</h3>
-            <p>Enter your current location and destination for a safe route recommendation</p>
+            <p>Enter or detect your current location and choose a destination</p>
+            <button onclick="getCurrentLocation()">Use My Location</button>
             <input type="text" id="route-current-location" placeholder="Current Location">
             <input type="text" id="route-destination" placeholder="Destination">
             <button onclick="processSafePath()">Find Safe Route</button>
             <p id="route-output"></p>
 
+            <div id="map" style="height: 400px; width: 100%;"></div>
+            
             <button onclick="emergencyTap()" class="emergency-tap">Emergency Tap</button>
         </div>
         <button onclick="logout()">Logout</button>
     </div>
 
     <script src="script.js"></script> 
-
 </body>
 </html>
