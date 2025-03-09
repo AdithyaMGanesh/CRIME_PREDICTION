@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crime Prediction System</title>
+    <title>Crime Prediction & Safe Path System</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
     <!-- Landing Page -->
     <div class="container" id="landing-page">
-        <h1>Crime Prediction System</h1>
+        <h1>Crime Prediction & Safe Path System</h1>
         <button onclick="showPage('login-page')">Login</button>
         <button onclick="showPage('register-page')">Create Account</button>
     </div>
@@ -33,14 +33,33 @@
         <p>Already registered? <a href="#" onclick="showPage('login-page')">Login here</a></p>
     </div>
 
-    <!-- Main Crime Analysis Page -->
+    <!-- Main Dashboard Page -->
     <div class="container hidden" id="main-page">
-        <h2>Safe Route Prediction</h2>
-        <p>Enter your current location & destination</p>
-        <input type="text" id="current-location" placeholder="Current Location">
-        <input type="text" id="destination" placeholder="Destination">
-        <button onclick="processRoute()">Find Safe Route</button>
-        <p id="output"></p>
+        <h2>Dashboard</h2>
+        <div class="tabs">
+            <button onclick="showTab('crime-prediction')">Crime Prediction</button>
+            <button onclick="showTab('safe-path')">Safe Path Recommendation</button>
+        </div>
+        <!-- Crime Prediction Tab -->
+        <div id="crime-prediction" class="tab-content">
+            <h3>Crime Prediction</h3>
+            <p>Enter your State and District to predict total IPC crimes</p>
+            <input type="text" id="prediction-state" placeholder="Enter State (e.g., ANDHRA PRADESH)">
+            <input type="text" id="prediction-district" placeholder="Enter District (e.g., GUNTUR)">
+            <button onclick="processPrediction()">Predict Crime</button>
+            <p id="prediction-output"></p>
+        </div>
+        <!-- Safe Path Recommendation Tab -->
+        <div id="safe-path" class="tab-content hidden">
+            <h3>Safe Path Recommendation</h3>
+            <p>Enter your current location and destination for a safe route recommendation</p>
+            <input type="text" id="route-current-location" placeholder="Current Location">
+            <input type="text" id="route-destination" placeholder="Destination">
+            <button onclick="processSafePath()">Find Safe Route</button>
+            <p id="route-output"></p>
+
+            <button onclick="emergencyTap()" class="emergency-tap">Emergency Tap</button>
+        </div>
         <button onclick="logout()">Logout</button>
     </div>
 
