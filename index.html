@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Prediction System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Landing Page -->
+    <div class="container" id="landing-page">
+        <h1>Crime Prediction System</h1>
+        <button onclick="showPage('login-page')">Login</button>
+        <button onclick="showPage('register-page')">Create Account</button>
+    </div>
+
+    <!-- Login Page -->
+    <div class="container hidden" id="login-page">
+        <h2>Login</h2>
+        <input type="text" id="login-username" placeholder="Enter Username">
+        <input type="password" id="login-password" placeholder="Enter Password">
+        <button onclick="login()">Login</button>
+        <p>New User? <a href="#" onclick="showPage('register-page')">Create an account</a></p>
+    </div>
+
+    <!-- Registration Page -->
+    <div class="container hidden" id="register-page">
+        <h2>Create Account</h2>
+        <input type="text" id="reg-username" placeholder="Enter Username">
+        <input type="password" id="reg-password" placeholder="Enter Password">
+        <button onclick="register()">Register</button>
+        <p>Already registered? <a href="#" onclick="showPage('login-page')">Login here</a></p>
+    </div>
+
+    <!-- Main Crime Analysis Page -->
+    <div class="container hidden" id="main-page">
+        <h2>Safe Route Prediction</h2>
+        <p>Enter your current location & destination</p>
+        <input type="text" id="current-location" placeholder="Current Location">
+        <input type="text" id="destination" placeholder="Destination">
+        <button onclick="processRoute()">Find Safe Route</button>
+        <p id="output"></p>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script src="script.js"></script> 
+
+</body>
+</html>
