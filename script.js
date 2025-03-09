@@ -55,41 +55,7 @@ function processPrediction() {
     const district = document.getElementById("prediction-district").value;
 
     if (state && district) {
-        const data = {
-            state_ut: state.toUpperCase(),
-            district: district.toUpperCase(),
-            year: 2022,
-            // Dummy values for other columns
-            murder: 0,
-            attempt_to_murder: 0,
-            culpable_homicide: 0,
-            rape: 0,
-            custodial_rape: 0,
-            other_rape: 0,
-            kidnap_abduction: 0,
-            kidnap_women_girls: 0,
-            kidnap_others: 0,
-            dacoity: 0,
-            prep_dacoity: 0,
-            robbery: 0,
-            burglary: 0,
-            theft: 0,
-            auto_theft: 0,
-            other_theft: 0,
-            riots: 0,
-            criminal_breach_of_trust: 0,
-            cheating: 0,
-            counterfieting: 0,
-            arson: 0,
-            grievous_hurt: 0,
-            dowry_deaths: 0,
-            assault_women: 0,
-            insult_to_modesty_of_women: 0,
-            cruelty_by_husband: 0,
-            import_girls_foreign: 0,
-            death_by_negligence: 0,
-            other_ipc_crimes: 0
-        };
+        const data = { state_ut: state.toUpperCase(), district: district.toUpperCase() };
 
         document.getElementById("prediction-output").innerText = "Calculating prediction...";
 
@@ -100,8 +66,7 @@ function processPrediction() {
         })
         .then(response => response.json())
         .then(result => {
-            document.getElementById("prediction-output").innerText = 
-                `Predicted Total IPC Crimes: ${result.predicted_total_ipc_crimes}`;
+            document.getElementById("prediction-output").innerText = `Predicted Total IPC Crimes: ${result.predicted_total_ipc_crimes}`;
         })
         .catch(error => {
             console.error("Error:", error);
@@ -112,16 +77,27 @@ function processPrediction() {
     }
 }
 
-// 5. SAFE PATH RECOMMENDATION
+// 5. SAFE PATH RECOMMENDATION WITH GPS SUPPORT
+function getCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            document.getElementById("route-current-location").value = `${lat}, ${lon}`;
+        }, error => {
+            alert("Error retrieving location. Please enter manually.");
+        });
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
 function processSafePath() {
     const currentLocation = document.getElementById("route-current-location").value;
     const destination = document.getElementById("route-destination").value;
 
     if (currentLocation && destination) {
-        const data = {
-            current_location,
-            destination
-        };
+        const data = { current_location: currentLocation, destination: destination };
 
         document.getElementById("route-output").innerText = "Calculating safe route...";
 
@@ -133,6 +109,7 @@ function processSafePath() {
         .then(response => response.json())
         .then(result => {
             document.getElementById("route-output").innerText = `Recommended Safe Route: ${result.safe_route}`;
+            displayRouteOnMap(result.safe_route);
         })
         .catch(error => {
             console.error("Error:", error);
@@ -143,11 +120,22 @@ function processSafePath() {
     }
 }
 
-// 6. EMERGENCY TAP
+// 6. MAP VISUALIZATION
+function displayRouteOnMap(route) {
+    const map = L.map('map').setView([20.5937, 78.9629], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    if (Array.isArray(route) && route.length > 1) {
+        const polyline = L.polyline(route, { color: 'blue' }).addTo(map);
+        map.fitBounds(polyline.getBounds());
+    }
+}
+
+// 7. EMERGENCY TAP
 function emergencyTap() {
-    // For demonstration, we just ask for user location in a prompt.
-    // In a real app, you'd use HTML5 geolocation or user profile data.
-    const userLocation = prompt("Enter your current location (optional):", "Unknown");
+    const userLocation = document.getElementById("route-current-location").value || "Unknown";
     const userId = localStorage.getItem("username") || "Guest";
 
     fetch("http://127.0.0.1:5000/emergency", {
@@ -165,7 +153,7 @@ function emergencyTap() {
     });
 }
 
-// 7. LOGOUT
+// 8. LOGOUT
 function logout() {
     alert("Logged out successfully!");
     showPage("landing-page");
